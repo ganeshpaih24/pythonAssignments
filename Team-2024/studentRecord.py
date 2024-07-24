@@ -35,3 +35,22 @@ class studentScore:
             csv_writer = csv.DictWriter(file, fieldnames=data.keys())
             csv_writer.writerow(data)
             print("Student data stored successfully")
+
+    def mainMenu(self):
+        while True:
+            print("Main Menu")
+            print("1. Retrieve Student Score")
+            print("2. Store Student Score")
+            print("2. Exit")
+            choice = input("Enter your choice: ").strip()
+
+            if choice == '1':
+                rollno = int(input("Enter RollNo: ").strip())
+                print(self.RetrieveStudentScore(rollno))
+            elif choice == '2':
+                self.StoreStudentScore()
+            elif choice == '3':
+                print("Exiting...")
+                break
+            else:
+                print("Invalid choice. Please try again.")
