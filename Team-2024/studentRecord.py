@@ -41,7 +41,7 @@ class studentScore:
             print("Main Menu")
             print("1. Retrieve Student Score")
             print("2. Store Student Score")
-            print("2. Exit")
+            print("3. Exit")
             choice = input("Enter your choice: ").strip()
 
             if choice == '1':
@@ -54,3 +54,22 @@ class studentScore:
                 break
             else:
                 print("Invalid choice. Please try again.")
+
+    def calculateAverage(self):
+        with open(self.csv_file, mode='r') as file:
+            csv_reader = csv.DictReader(file)
+            students = list(csv_reader)
+
+        for student in students:
+            student['average'] = (int(student['english']) + int(student['maths']) + int(student['science'])) // 3
+
+        with open(self.csv_file, mode='w', newline='') as file:
+            fieldnames = students[0].keys()
+            csv_writer = csv.DictWriter(file, fieldnames=fieldnames)
+            csv_writer.writeheader()
+            csv_writer.writerows(students)
+
+        print("Average scores calculated and CSV updated successfully")
+
+# s = studentScore('student_data.csv')
+# s.calculateAverage()
