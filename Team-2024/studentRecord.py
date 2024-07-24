@@ -41,7 +41,9 @@ class studentScore:
             print("Main Menu")
             print("1. Retrieve Student Score")
             print("2. Store Student Score")
-            print("3. Exit")
+            print("3. Calculate Average Scores")
+            print("4. Display All Records")
+            print("5. Exit")
             choice = input("Enter your choice: ").strip()
 
             if choice == '1':
@@ -50,11 +52,16 @@ class studentScore:
             elif choice == '2':
                 self.StoreStudentScore()
             elif choice == '3':
+                self.calculateAverage()
+            elif choice == '4':
+                header = input("Enter the header to sort by: ").strip()
+                sort_order = input("Enter sort order (asc/desc): ").strip().lower() == 'asc'
+                self.displayAll(header, sort_order)
+            elif choice == '5':
                 print("Exiting...")
                 break
             else:
                 print("Invalid choice. Please try again.")
-
     def calculateAverage(self):
         with open(self.csv_file, mode='r') as file:
             csv_reader = csv.DictReader(file)
@@ -71,5 +78,20 @@ class studentScore:
 
         print("Average scores calculated and CSV updated successfully")
 
-# s = studentScore('student_data.csv')
-# s.calculateAverage()
+    def displayAll(self, header, sort_order=True):
+        with open(self.csv_file, mode='r') as file:
+            csv_reader = csv.DictReader(file)
+            records = list(csv_reader)
+
+        if header not in records[0]:
+            print(f"Header not found: {header}")
+            return
+
+        records.sort(key=lambda x: x[header], reverse=not sort_order)
+
+        for record in records:
+            print(record)
+
+
+s = studentScore('student_data.csv')
+s.mainMenu()
