@@ -17,3 +17,21 @@ class studentScore:
                         "science": row['science']
                     }
             return f"No records found for rollno {Rollno}"
+
+    def StoreStudentScore(self):
+        data = {}
+        data['Rollno'] = input("Enter RollNo: ").strip()
+        data['name'] = input("Enter student name: ").strip()
+        data['english'] = input("Enter English score: ").strip()
+        data['maths'] = input("Enter Maths score: ").strip()
+        data['science'] = input("Enter Science score: ").strip()
+
+        missing = [key for key, value in data.items() if not value]
+        if missing:
+            print(f"Failed to store data, following parameters missing: {', '.join(missing)}")
+            return
+
+        with open(self.csv_file, mode='a', newline='') as file:
+            csv_writer = csv.DictWriter(file, fieldnames=data.keys())
+            csv_writer.writerow(data)
+            print("Student data stored successfully")
