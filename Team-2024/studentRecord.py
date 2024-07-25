@@ -10,6 +10,15 @@ class studentScore:
         self.csv_file = csv_file
 
     def RetrieveStudentScore(self, Rollno):
+        """
+        Retrieves the student score based on the given Rollno.
+
+        Parameters:
+        Rollno (int): The roll number of the student.
+
+        Returns:
+        dict: A dictionary containing the student's details if found.
+        """
         with open(self.csv_file, mode='r') as file:
             csv_reader = csv.DictReader(file)
             for row in csv_reader:
@@ -20,6 +29,11 @@ class studentScore:
             print(f"No records found for rollno {Rollno}")
 
     def StoreStudentScore(self):
+        """
+        Stores the student score by collecting input from the user.
+
+        Prompts the user to enter student details and saves them to the CSV file.
+        """
         data = {}
         data['Rollno'] = input("Enter RollNo: ").strip()
         data['name'] = input("Enter student name: ").strip()
@@ -41,6 +55,16 @@ class studentScore:
             print("Student data stored successfully")
 
     def mainMenu(self):
+        """
+        Displays the main menu and prompts the user to choose an option.
+
+        Options:
+        1. Retrieve Student Score
+        2. Store Student Score
+        3. Calculate Average Scores
+        4. Display All Records
+        5. Exit
+        """
         while True:
             print("Main Menu")
             print("1. Retrieve Student Score")
@@ -68,6 +92,9 @@ class studentScore:
                 print("Invalid choice. Please try again.")
 
     def calculateAverage(self):
+        """
+        Calculates the average score of 3 subjects per student and updates the CSV file.
+        """
         with open(self.csv_file, mode='r') as file:
             csv_reader = csv.DictReader(file)
             students = list(csv_reader)
@@ -85,6 +112,13 @@ class studentScore:
         print("Average scores calculated and CSV updated successfully")
 
     def displayAll(self, header, sort_order=True):
+        """
+        Displays all the records sorted by the specified header and order.
+
+        Parameters:
+        header (str): The column name to sort by.
+        sort_order (bool): True for ascending, False for descending.
+        """
         with open(self.csv_file, mode='r') as file:
             csv_reader = csv.DictReader(file)
             records = list(csv_reader)
