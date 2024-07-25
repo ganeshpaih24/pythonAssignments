@@ -19,14 +19,18 @@ class studentScore:
         Returns:
         dict: A dictionary containing the student's details if found.
         """
-        with open(self.csv_file, mode='r') as file:
-            csv_reader = csv.DictReader(file)
-            for row in csv_reader:
-                if row['Rollno'] == str(Rollno):
-                    logging.info(f"Record found for rollno {Rollno}")
-                    return row
-            logging.warning(f"No records found for rollno {Rollno}")
-            print(f"No records found for rollno {Rollno}")
+        try:
+            with open(self.csv_file, mode='r') as file:
+                csv_reader = csv.DictReader(file)
+                for row in csv_reader:
+                    if row['Rollno'] == str(Rollno):
+                        logging.info(f"Record found for rollno {Rollno}")
+                        return row
+                logging.warning(f"No records found for rollno {Rollno}")
+                print(f"No records found for rollno {Rollno}")
+        except Exception as e:
+            logging.error(f"Error retrieving student score: {e}")
+            print(f"Error retrieving student score: {e}")
 
     def StoreStudentScore(self):
         """
@@ -47,12 +51,16 @@ class studentScore:
             print(f"Failed to store data, following parameters missing: {', '.join(missing)}")
             return
 
-        with open(self.csv_file, mode='a', newline='') as file:
-            csv_writer = csv.DictWriter(file, fieldnames=data.keys())
-            # print(csv_writer)
-            csv_writer.writerow(data)
-            logging.info("Student data stored successfully")
-            print("Student data stored successfully")
+        try:
+            with open(self.csv_file, mode='a', newline='') as file:
+                csv_writer = csv.DictWriter(file, fieldnames=data.keys())
+                # print(csv_writer)
+                csv_writer.writerow(data)
+                logging.info("Student data stored successfully")
+                print("Student data stored successfully")
+        except Exception as e:
+            logging.error(f"Error storing student score: {e}")
+            print(f"Error storing student score: {e}")
 
     def mainMenu(self):
         """
@@ -95,21 +103,26 @@ class studentScore:
         """
         Calculates the average score of 3 subjects per student and updates the CSV file.
         """
-        with open(self.csv_file, mode='r') as file:
-            csv_reader = csv.DictReader(file)
-            students = list(csv_reader)
+        try:
+            with open(self.csv_file, mode='r') as file:
+                csv_reader = csv.DictReader(file)
+                students = list(csv_reader)
 
-        for student in students:
-            student['average'] = (int(student['english']) + int(student['maths']) + int(student['science'])) // 3
+            for student in students:
+                student['average'] = (int(student['english']) + int(student['maths']) + int(student['science'])) // 3
 
-        with open(self.csv_file, mode='w', newline='') as file:
-            fieldnames = students[0].keys()
-            csv_writer = csv.DictWriter(file, fieldnames=fieldnames)
-            csv_writer.writeheader()
-            csv_writer.writerows(students)
+            with open(self.csv_file, mode='w', newline='') as file:
+                fieldnames = students[0].keys()
+                csv_writer = csv.DictWriter(file, fieldnames=fieldnames)
+                csv_writer.writeheader()
+                csv_writer.writerows(students)
 
-        logging.info("Average scores calculated and CSV updated successfully")
-        print("Average scores calculated and CSV updated successfully")
+            logging.info("Average scores calculated and CSV updated successfully")
+            print("Average scores calculated and CSV updated successfully")
+        except Exception as e:
+            logging.error(f"Error calculating average scores: {e}")
+            print(f"Error calculating average scores: {e}")
+
 
     def displayAll(self, header, sort_order=True):
         """
@@ -119,22 +132,26 @@ class studentScore:
         header (str): The column name to sort by.
         sort_order (bool): True for ascending, False for descending.
         """
-        with open(self.csv_file, mode='r') as file:
-            csv_reader = csv.DictReader(file)
-            records = list(csv_reader)
-        print(records[0])
+        try:
+            with open(self.csv_file, mode='r') as file:
+                csv_reader = csv.DictReader(file)
+                records = list(csv_reader)
+            print(records[0])
 
-        if header not in records[0]:
-            logging.error(f"Header not found: {header}")
-            print(f"Header not found: {header}")
-            return
+            if header not in records[0]:
+                logging.error(f"Header not found: {header}")
+                print(f"Header not found: {header}")
+                return
 
-        records.sort(key=lambda x: x[header], reverse=not sort_order)
+            records.sort(key=lambda x: x[header], reverse=not sort_order)
 
-        for record in records:
-            print(record)
+            for record in records:
+                print(record)
 
-        logging.info(f"Records displayed sorted by {header} in {'ascending' if sort_order else 'descending'} order")
+            logging.info(f"Records displayed sorted by {header} in {'ascending' if sort_order else 'descending'} order")
+        except Exception as e:
+            logging.error(f"Error displaying records: {e}")
+            print(f"Error displaying records: {e}")
 
 
 s = studentScore('student_data.csv')
