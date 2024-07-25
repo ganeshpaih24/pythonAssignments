@@ -4,6 +4,7 @@ import logging
 logging.basicConfig(filename='student_record.log', level=logging.DEBUG,
                     format='%(asctime)s , %(levelname)s , %(message)s')
 
+
 class studentScore:
     def __init__(self, csv_file='student_data.csv'):
         self.csv_file = csv_file
@@ -65,6 +66,7 @@ class studentScore:
                 break
             else:
                 print("Invalid choice. Please try again.")
+
     def calculateAverage(self):
         with open(self.csv_file, mode='r') as file:
             csv_reader = csv.DictReader(file)
@@ -100,6 +102,6 @@ class studentScore:
 
         logging.info(f"Records displayed sorted by {header} in {'ascending' if sort_order else 'descending'} order")
 
+
 s = studentScore('student_data.csv')
 s.mainMenu()
-# s.StoreStudentScore()
