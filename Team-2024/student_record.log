@@ -1,0 +1,6 @@
+2024-07-24 16:00:56,777 , INFO , Record found for rollno 6
+2024-07-24 16:29:11,456 , WARNING , No records found for rollno 13
+2024-07-24 16:37:53,062 , INFO , Student data stored successfully
+2024-07-24 16:44:41,541 , ERROR , Failed to store data, following parameters missing: name, maths, science
+2024-07-25 09:44:09,073 , INFO , Average scores calculated and CSV updated successfully
+2024-07-25 09:45:45,166 , ERROR , Header not found: 13

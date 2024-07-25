@@ -1,4 +1,8 @@
 import csv
+import logging
+
+logging.basicConfig(filename='student_record.log', level=logging.DEBUG,
+                    format='%(asctime)s , %(levelname)s , %(message)s')
 
 class studentScore:
     def __init__(self, csv_file='student_data.csv'):
@@ -9,14 +13,10 @@ class studentScore:
             csv_reader = csv.DictReader(file)
             for row in csv_reader:
                 if row['Rollno'] == str(Rollno):
-                    return {
-                        "Rollno": row['Rollno'],
-                        "name": row['name'],
-                        "english": row['english'],
-                        "maths": row['maths'],
-                        "science": row['science']
-                    }
-            return f"No records found for rollno {Rollno}"
+                    logging.info(f"Record found for rollno {Rollno}")
+                    return row
+            logging.warning(f"No records found for rollno {Rollno}")
+            print(f"No records found for rollno {Rollno}")
 
     def StoreStudentScore(self):
         data = {}
@@ -28,12 +28,15 @@ class studentScore:
 
         missing = [key for key, value in data.items() if not value]
         if missing:
+            logging.error(f"Failed to store data, following parameters missing: {', '.join(missing)}")
             print(f"Failed to store data, following parameters missing: {', '.join(missing)}")
             return
 
         with open(self.csv_file, mode='a', newline='') as file:
             csv_writer = csv.DictWriter(file, fieldnames=data.keys())
+            # print(csv_writer)
             csv_writer.writerow(data)
+            logging.info("Student data stored successfully")
             print("Student data stored successfully")
 
     def mainMenu(self):
@@ -76,14 +79,17 @@ class studentScore:
             csv_writer.writeheader()
             csv_writer.writerows(students)
 
+        logging.info("Average scores calculated and CSV updated successfully")
         print("Average scores calculated and CSV updated successfully")
 
     def displayAll(self, header, sort_order=True):
         with open(self.csv_file, mode='r') as file:
             csv_reader = csv.DictReader(file)
             records = list(csv_reader)
+        print(records[0])
 
         if header not in records[0]:
+            logging.error(f"Header not found: {header}")
             print(f"Header not found: {header}")
             return
 
@@ -92,6 +98,8 @@ class studentScore:
         for record in records:
             print(record)
 
+        logging.info(f"Records displayed sorted by {header} in {'ascending' if sort_order else 'descending'} order")
 
 s = studentScore('student_data.csv')
 s.mainMenu()
+# s.StoreStudentScore()
